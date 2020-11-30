@@ -2,6 +2,7 @@
 # Copyright (c) 2014 Adafruit Industries
 # Author: Tony DiCola
 
+
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -58,24 +59,24 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(24, GPIO.IN,pull_up_down=GPIO.PUD_UP)
 
 deviceId = "DHJfOeHc"
-deviceKey = "z5QEHTYa3kt0Z98U" 
-def post_to_mcs(payload): 
-	headers = {"Content-type": "application/json", "deviceKey": deviceKey} 
-	not_connected = 1 
+deviceKey = "z5QEHTYa3kt0Z98U"
+def post_to_mcs(payload):
+	headers = {"Content-type": "application/json", "deviceKey": deviceKey}
+	not_connected = 1
 	while (not_connected):
 		try:
 			conn = http.HTTPConnection("api.mediatek.com:80")
-			conn.connect() 
-			not_connected = 0 
-		except (http.HTTPException, socket.error) as ex: 
+			conn.connect()
+			not_connected = 0
+		except (http.HTTPException, socket.error) as ex:
 			print ("Error: %s" % ex)
 			time.sleep(5)
-			 # sleep 5 seconds 
+			 # sleep 5 seconds
 	conn.request("POST", "/mcs/v2/devices/" + deviceId + "/datapoints", json.dumps(payload), headers)
-	response = conn.getresponse() 
-	print( response.status, response.reason, json.dumps(payload), time.strftime("%c")) 
-	data = response.read() 
-	conn.close() 
+	response = conn.getresponse()
+	print( response.status, response.reason, json.dumps(payload), time.strftime("%c"))
+	data = response.read()
+	conn.close()
 
 
 while True:
@@ -91,10 +92,9 @@ while True:
 		{"dataChnId":"Temperature","values":{"value":t0}},
                  {"dataChnId":"SwitchStatus","values":{"value":SwitchStatus}}]}
         post_to_mcs(payload)
-        time.sleep(5) 
+        time.sleep(5)
 
     else:
         print('Failed to get reading. Try again!')
         sys.exit(1)
-    
-    
+
